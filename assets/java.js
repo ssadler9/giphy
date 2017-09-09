@@ -9,7 +9,6 @@ $('#addSport').on('click', function (event){
 	displayButtons();
 });
 
-
 // display buttons dynamically on page
 function displayButtons() {
     $('#button-display').empty();
@@ -59,7 +58,7 @@ $(".gif").on("click", function() {
         returnGif.attr('data-animate', results[i].images.fixed_height.url);
         returnGif.attr('data-state', 'still');
         returnGif.addClass('gifImage');
-        var still = $("<img src'" + results[i].images.original_still.url + "' width='300px' height='300px' name='" + results[i].images.original.url + "' data-url='" + results[i].images.original_still.url + "'>");
+        var still = $("<img src='" + results[i].images.original_still.url + "' width='300px' height='300px' name='" + results[i].images.original.url + "' data-url='" + results[i].images.original_still.url + "'>");
         still.addClass('img-rounded');
 
 
@@ -69,12 +68,25 @@ $(".gif").on("click", function() {
             if (toggle === 0) {
                 $(this).attr('src', ($(this).attr('name')));
                 toggle = 1;
-            } else if (toggle = 1){
+            } else if (toggle === 1){
                 $(this).attr('src', ($(this).attr('data-url')));
                 toggle = 0;
             }
 
         })
+
+        $(".gifImage").on("click", function() {
+            var state = $(this).attr("data-state");
+            console.log(state);
+        // if else statement based on data-state
+                if(state === "still") {
+                    $(this).attr("src", $(this).data("animate"));
+                    $(this).attr("data-state", "animate");
+                } else {
+                    $(this).attr("src", $(this).data("still"));
+                    $(this).attr("data-state", "still");
+                }
+        });
 
     // now to display the gif and rating to the page
         gifDiv.prepend(p);
