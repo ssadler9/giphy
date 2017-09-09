@@ -1,5 +1,16 @@
 // Display Buttons for user on the DOM
 var topics = ["football", "golf", "baseball", "basketball"];
+
+// Submit button needs to append to the page, and request info from ajax when clicked
+$('#addSport').on('click', function (event){
+	event.preventDefault();
+	var addSport = $('#searchTerm').val().trim();
+	topics.push(addSport);
+	displayButtons();
+});
+$(document).on("click", ".gif", displayGif);
+
+// display buttons dynamically on page
 function displayButtons() {
     $('#button-display').empty();
     // loops through topics and creates buttons
@@ -18,7 +29,8 @@ function displayButtons() {
 displayButtons();
 
 // create a click event to send to ajax
-$("button").on("click", function() {
+function displayGif (){
+$(".gif").on("click", function() {
     var gif = $(this).attr("data-name");
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
         gif + "&api_key=4a7bc80817954ed0a0a298eb2da9c2b0&limit=10";
@@ -45,4 +57,6 @@ $("button").on("click", function() {
         }
     });
 });
+};
+displayGif();
 
