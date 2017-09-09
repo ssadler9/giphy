@@ -8,7 +8,7 @@ $('#addSport').on('click', function (event){
 	topics.push(addSport);
 	displayButtons();
 });
-$(document).on("click", ".gif", displayGif);
+
 
 // display buttons dynamically on page
 function displayButtons() {
@@ -40,23 +40,53 @@ $(".gif").on("click", function() {
         method: "GET"
     })
     .done(function(response) {
+        console.log(response);
         var results = response.data;
     // creating a div for each gif returned
         for (var i = 0; i < results.length; i++) {
+    // Need to have the images load as still images, then activate on click
+        // var still = "https://media2.giphy.com/media/akiHW8qDydkm4/200w_s.gif"
+        // var animate = "https://media2.giphy.com/media/akiHW8qDydkm4/200w.gif"
         var gifDiv = $("<div class='item'>");
     // displaying the rating to each returned gif
-        var rating = results[i].rating;
+        var rating = results[i].rating.toUpperCase();
         var p = $("<p>").text("Rating: " + rating);
         // add an img to the gifDiv
         var returnGif = $("<img>");
-        returnGif.attr("src", results[i].images.fixed_height.url);
+        // Need to create Data-types for still and animated return gifs
+        returnGif.attr("src", results[i].images.fixed_height_still.url);
+        returnGif.attr('data-still', results[i].images.fixed_height_still.url);
+        returnGif.attr('data-animate', results[i].images.fixed_height.url);
+        returnGif.attr('data-state', 'still');
+        returnGif.addClass('gifImage');
+        var still = $("<img src'" + results[i].images.original_still.url + "' width='300px' height='300px' name='" + results[i].images.original.url + "' data-url='" + results[i].images.original_still.url + "'>");
+        still.addClass('img-rounded');
+
+
+        // gif animates on event
+        var toggle = 0;
+        still.on('click', function(event){
+            if (toggle === 0) {
+                $(this).attr('src', ($(this).attr('name')));
+                toggle = 1;
+            } else if (toggle = 1){
+                $(this).attr('src', ($(this).attr('data-url')));
+                toggle = 0;
+            }
+
+        })
+
     // now to display the gif and rating to the page
         gifDiv.prepend(p);
-        gifDiv.prepend(returnGif);
+        // gifDiv.prepend(returnGif);
+         // adding the still gif to the DOM on the buttonclick
+        gifDiv.append(still);
         $("#gif-display").prepend(gifDiv);
         }
     });
 });
 };
 displayGif();
+$(document).on("click", ".gif", displayGif);
+
 
