@@ -27,9 +27,9 @@ function displayButtons() {
 };
 displayButtons();
 
-// create a click event to send to ajax
-function displayGif (){
-$(".gif").on("click", function() {
+// displayGif();
+$(document).on("click", ".gif", function(){
+       
     var gif = $(this).attr("data-name");
     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
         gif + "&api_key=4a7bc80817954ed0a0a298eb2da9c2b0&limit=10";
@@ -40,12 +40,11 @@ $(".gif").on("click", function() {
     })
     .done(function(response) {
         console.log(response);
+        
         var results = response.data;
+        
     // creating a div for each gif returned
         for (var i = 0; i < results.length; i++) {
-    // Need to have the images load as still images, then activate on click
-        // var still = "https://media2.giphy.com/media/akiHW8qDydkm4/200w_s.gif"
-        // var animate = "https://media2.giphy.com/media/akiHW8qDydkm4/200w.gif"
         var gifDiv = $("<div class='item'>");
     // displaying the rating to each returned gif
         var rating = results[i].rating.toUpperCase();
@@ -61,7 +60,6 @@ $(".gif").on("click", function() {
         var still = $("<img src='" + results[i].images.original_still.url + "' width='300px' height='300px' name='" + results[i].images.original.url + "' data-url='" + results[i].images.original_still.url + "'>");
         still.addClass('img-rounded');
 
-
         // gif animates on event
         var toggle = 0;
         still.on('click', function(event){
@@ -73,19 +71,6 @@ $(".gif").on("click", function() {
                 toggle = 0;
             }
 
-        })
-
-        $(".gifImage").on("click", function() {
-            var state = $(this).attr("data-state");
-            console.log(state);
-        // if else statement based on data-state
-                if(state === "still") {
-                    $(this).attr("src", $(this).data("animate"));
-                    $(this).attr("data-state", "animate");
-                } else {
-                    $(this).attr("src", $(this).data("still"));
-                    $(this).attr("data-state", "still");
-                }
         });
 
     // now to display the gif and rating to the page
@@ -97,8 +82,5 @@ $(".gif").on("click", function() {
         }
     });
 });
-};
-displayGif();
-$(document).on("click", ".gif", displayGif);
 
 
